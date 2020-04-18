@@ -11,6 +11,7 @@ import {
   Alert
 } from 'react-native'
 import VideoPlayer from 'react-native-video'
+import { Video } from 'expo-av'
 import KeepAwake from 'react-native-keep-awake'
 import Orientation from 'react-native-orientation'
 import Icons from 'react-native-vector-icons/MaterialIcons'
@@ -51,7 +52,7 @@ const defaultTheme = {
   loading: '#FFF'
 }
 
-class Video extends Component {
+class MyVideo extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -382,7 +383,7 @@ class Video extends Component {
           ((loading && placeholder) || currentTime < 0.01) &&
           <Image resizeMode="cover" style={styles.image} {...checkSource(placeholder)} />
         }
-        <VideoPlayer
+        {/* <VideoPlayer
           {...checkSource(url)}
           paused={paused}
           resizeMode={resizeMode}
@@ -402,6 +403,17 @@ class Video extends Component {
           onError={e => this.onError(e)}
           // onBuffer={() => this.onBuffer()} // Callback when remote video is buffering
           onTimedMetadata={e => onTimedMetadata(e)} // Callback when the stream receive some metadata
+        /> */}
+        <Video
+         {...checkSource(url)}
+         shouldPlay={paused}
+         resizeMode={resizeMode}
+        //  repeat={loop}
+         style={fullScreen ? styles.fullScreen : inline}
+        //  ref={(ref) => { this.player = ref }}
+         rate={rate}
+         volume={volume}
+         isMuted={muted}
         />
         <Controls
           ref={(ref) => { this.controls = ref }}
@@ -432,11 +444,12 @@ class Video extends Component {
 
   render() {
     if (this.state.renderError) return this.renderError()
+    debugger
     return this.renderPlayer()
   }
 }
 
-Video.propTypes = {
+MyVideo.propTypes = {
   url: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number
@@ -480,7 +493,7 @@ Video.propTypes = {
   controlDuration: PropTypes.number,
 }
 
-Video.defaultProps = {
+MyVideo.defaultProps = {
   placeholder: undefined,
   style: {},
   error: true,
@@ -510,4 +523,4 @@ Video.defaultProps = {
   controlDuration: 3,
 }
 
-export default Video
+export default MyVideo
